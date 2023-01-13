@@ -56,11 +56,6 @@ class Recipe(models.Model):
         verbose_name='Автор'
     )
     tags = models.ManyToManyField(Tag)
-    # ingredients = models.ManyToManyField(
-    #     Ingredient,
-    #     through='IngredientAmount',
-    #     related_name='recipes'
-    # )
     cooking_time = models.IntegerField(
         validators=[
             MinValueValidator(1),

@@ -1,15 +1,15 @@
 from django.contrib.auth import get_user_model
-from django.shortcuts import get_object_or_404
 from django.db.models import Sum
 from django.http import HttpResponse
-from rest_framework import mixins, status, viewsets, generics
+from django.shortcuts import get_object_or_404
+from rest_framework import generics, mixins, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from recipes.models import (Favorite, Ingredient, Recipe, ShoppingCart, Tag,
-                            IngredientAmount)
+from recipes.models import (Favorite, Ingredient, IngredientAmount, Recipe,
+                            ShoppingCart, Tag)
 from users.models import Subscription
 
 from .filters import RecipeFilter
