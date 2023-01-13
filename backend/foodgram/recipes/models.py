@@ -56,11 +56,11 @@ class Recipe(models.Model):
         verbose_name='Автор'
     )
     tags = models.ManyToManyField(Tag)
-    ingredients = models.ManyToManyField(
-        Ingredient,
-        through='IngredientAmount',
-        related_name='recipes'
-    )
+    # ingredients = models.ManyToManyField(
+    #     Ingredient,
+    #     through='IngredientAmount',
+    #     related_name='recipes'
+    # )
     cooking_time = models.IntegerField(
         validators=[
             MinValueValidator(1),
@@ -84,7 +84,7 @@ class IngredientAmount(models.Model):
     recipe = models.ForeignKey(
         'Recipe',
         on_delete=models.CASCADE,
-        related_name='ingredient',
+        related_name='ingredients',
         verbose_name='Рецепт'
     )
     ingredient = models.ForeignKey(
