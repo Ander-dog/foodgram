@@ -1,27 +1,15 @@
-import base64
-
 from django.contrib.auth import get_user_model
-from django.contrib.auth.password_validation import validate_password
-from django.core.files.base import ContentFile
+from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.fields import CurrentUserDefault
 
 from recipes.models import (Favorite, Ingredient, IngredientAmount, Recipe,
                             ShoppingCart, Tag)
+from foodgram.settings import DEFAULT_RECIPE_LIMIT
 from users.models import Subscription
 
 User = get_user_model()
-
-
-class Base64ImageField(serializers.ImageField):
-    def to_internal_value(self, data):
-        if isinstance(data, str) and data.startswith('data:image'):
-            format, imgstr = data.split(';base64,')
-            ext = format.split('/')[-1]
-            data = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
-
-        return super().to_internal_value(data)
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -106,7 +94,7 @@ class ShortRecipeSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     is_subscribed = serializers.SerializerMethodField()
-    password = serializers.CharField(required=True, write_only=True)
+    password = serializers.CharField(write_only=True)
 
     class Meta:
         model = User
@@ -153,7 +141,10 @@ class SubscriptionSerializer(serializers.ModelSerializer):
 
     def get_recipes(self, obj):
         request = self.context['request']
-        recipes_limit = request.query_params.get('recipes_limit', 5)
+        recipes_limit = request.query_params.get(
+            'recipes_limit',
+            DEFAULT_RECIPE_LIMIT,
+        )
         recipes = obj.recipes.all()[:int(recipes_limit)]
         return ShortRecipeSerializer(recipes, many=True).data
 
@@ -188,7 +179,10 @@ class SubscribeSerializer(serializers.ModelSerializer):
 
 
 class RecipeInteractSerializer(serializers.ModelSerializer):
-    tags = serializers.ListField(write_only=True)
+    tags = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Tag.objects.all(),
+    )
     image = Base64ImageField()
     ingredients = IngredientAmountInteractSerializer(many=True)
 
@@ -205,9 +199,9 @@ class RecipeInteractSerializer(serializers.ModelSerializer):
         )
 
     def validate(self, attrs):
-        print(attrs)
         ingredients = attrs['ingredients']
         tags = attrs['tags']
+        print(tags)
         ingredients_id = []
         for ingr in ingredients:
             print(ingr)
@@ -216,19 +210,14 @@ class RecipeInteractSerializer(serializers.ModelSerializer):
             if ingr['id'] in ingredients_id:
                 raise ValidationError('Повторяющийся ингредиент')
             ingredients_id.append(ingr['id'])
-        for tag in tags:
-            if not Tag.objects.filter(id=tag).exists():
-                raise ValidationError('Нет такого тэга')
         return attrs
 
     def create(self, validated_data):
-        print(validated_data)
         ingredients = validated_data.pop('ingredients')
         tags = validated_data.pop('tags')
         recipe = super().create(validated_data)
         recipe.tags.set(tags)
         for ingr in ingredients:
-            print(ingr)
             ingredient = Ingredient.objects.get(id=ingr['id'])
             IngredientAmount.objects.create(
                 recipe=recipe,
@@ -238,7 +227,7 @@ class RecipeInteractSerializer(serializers.ModelSerializer):
         return recipe
 
     def update(self, instance, validated_data):
-        ingredients = validated_data.pop('ingrdients')
+        ingredients = validated_data.pop('ingredients')
         tags = validated_data.pop('tags')
         instance.name = validated_data.get('name', instance.name)
         instance.image = validated_data.get('image', instance.image)
@@ -253,13 +242,14 @@ class RecipeInteractSerializer(serializers.ModelSerializer):
 
         instance.ingredients.all().delete()
         for ingr in ingredients:
+            ingredient = Ingredient.objects.get(id=ingr['id'])
             IngredientAmount.objects.create(
                 recipe=instance,
-                ingredient=ingr['id'],
+                ingredient=ingredient,
                 amount=ingr['amount'],
             )
-
-        return super().update(instance, validated_data)
+        instance.save()
+        return instance
 
 
 class RecipeReadSerializer(serializers.ModelSerializer):
@@ -296,13 +286,3 @@ class RecipeReadSerializer(serializers.ModelSerializer):
         if not request or request.user.is_anonymous:
             return False
         return obj.shopcart.filter(user=request.user).exists()
-
-
-class PasswordSerializer(serializers.Serializer):
-
-    current_password = serializers.CharField(required=True)
-    new_password = serializers.CharField(required=True)
-
-    def validate_new_password(self, value):
-        validate_password(value)
-        return value

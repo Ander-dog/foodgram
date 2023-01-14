@@ -11,8 +11,8 @@ class Command(BaseCommand):
             ingredients_data = json.load(file)
             for ingr in ingredients_data:
                 ingredient = IngredientSerializer(data=ingr)
-                ingredient.is_valid(raise_exception=True)
-                ingredient.save()
+                if ingredient.is_valid(raise_exception=True):
+                    ingredient.save()
 
     def handle(self, *args, **options):
         self.fill_ingredients()

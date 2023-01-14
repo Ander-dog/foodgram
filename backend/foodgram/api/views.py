@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import Sum
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from djoser.serializers import SetPasswordSerializer
 from rest_framework import generics, mixins, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
@@ -15,10 +16,10 @@ from users.models import Subscription
 from .filters import RecipeFilter
 from .permissions import AuthorOrReadOnly, AuthorRegistrationOrReadOnly
 from .serializers import (FavoriteSerializer, IngredientSerializer,
-                          PasswordSerializer, RecipeInteractSerializer,
+                          RecipeInteractSerializer, UserSerializer,
                           RecipeReadSerializer, ShoppingCartSerializer,
                           SubscribeSerializer, SubscriptionSerializer,
-                          TagSerializer, UserSerializer)
+                          TagSerializer)
 
 User = get_user_model()
 
@@ -180,7 +181,7 @@ class UserViewSet(viewsets.ModelViewSet):
             permission_classes=(IsAuthenticated,))
     def set_password(self, request, *args, **kwargs):
         user = request.user
-        serializer = PasswordSerializer(data=request.data)
+        serializer = SetPasswordSerializer(data=request.data)
 
         if serializer.is_valid():
             current_password = serializer.data['current_password']
