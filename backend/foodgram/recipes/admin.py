@@ -11,18 +11,18 @@ class IngredientAmountInline(admin.TabularInline):
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
     list_display = (
-            'id',
-            'name',
-            'text',
-            'author',
-            'cooking_time',
-            'count_fans',
-        )
+        'id',
+        'name',
+        'text',
+        'author',
+        'cooking_time',
+        'count_fans',
+    )
     list_editable = (
-            'name',
-            'text',
-            'cooking_time',
-        )
+        'name',
+        'text',
+        'cooking_time',
+    )
     inlines = (IngredientAmountInline,)
     filter_horizontal = ('tags',)
     list_filter = ('name', 'author', 'tags')

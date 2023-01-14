@@ -16,10 +16,10 @@ from users.models import Subscription
 from .filters import RecipeFilter
 from .permissions import AuthorOrReadOnly, AuthorRegistrationOrReadOnly
 from .serializers import (FavoriteSerializer, IngredientSerializer,
-                          RecipeInteractSerializer, UserSerializer,
-                          RecipeReadSerializer, ShoppingCartSerializer,
-                          SubscribeSerializer, SubscriptionSerializer,
-                          TagSerializer)
+                          RecipeInteractSerializer, RecipeReadSerializer,
+                          ShoppingCartSerializer, SubscribeSerializer,
+                          SubscriptionSerializer, TagSerializer,
+                          UserSerializer)
 
 User = get_user_model()
 
@@ -134,7 +134,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         ).values(
             'ingredient__name', 'ingredient__measurement_unit'
         ).order_by('ingredient__name').annotate(
-                ingredient_amount=Sum('amount')
+            ingredient_amount=Sum('amount')
         )
         print(ingredients)
         if ingredients.count() == 0:
@@ -152,7 +152,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             text,
             status=status.HTTP_200_OK,
             content_type='text/plain'
-            )
+        )
         response['Content-Disposition'] = (f'attachment; filename='
                                            f'"{filename}"')
 

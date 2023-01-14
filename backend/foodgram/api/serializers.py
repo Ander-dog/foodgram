@@ -4,9 +4,9 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.fields import CurrentUserDefault
 
+from foodgram.settings import DEFAULT_RECIPE_LIMIT
 from recipes.models import (Favorite, Ingredient, IngredientAmount, Recipe,
                             ShoppingCart, Tag)
-from foodgram.settings import DEFAULT_RECIPE_LIMIT
 from users.models import Subscription
 
 User = get_user_model()

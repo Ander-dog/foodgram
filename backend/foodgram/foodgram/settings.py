@@ -129,8 +129,8 @@ AUTH_USER_MODEL = 'users.User'
 CORS_URLS_REGEX = r'^/api/.*$'
 
 REST_FRAMEWORK = {'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-    ),
+    'rest_framework.authentication.TokenAuthentication',
+),
 }
 
 DJOSER = {
