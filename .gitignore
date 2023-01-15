@@ -133,3 +133,4 @@ dmypy.json
 
 backend/foodgram/recipes/images
 backend/foodgram/static
+infra-dev
