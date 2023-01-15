@@ -132,3 +132,4 @@ dmypy.json
 .idea
 
 backend/foodgram/recipes/images
+backend/foodgram/static
