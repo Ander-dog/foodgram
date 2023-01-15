@@ -61,7 +61,7 @@ jobs:
           cd foodgram-project-react/infra/
           sudo docker-compose stop
           wait
-          sudo sudo docker rm ${{ secrets.DOCKERHUB_USERNAME }}_backend_1
+          sudo sudo docker rm infra_backend_1
           wait
           sudo docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/foodgram_backend:latest
           wait
