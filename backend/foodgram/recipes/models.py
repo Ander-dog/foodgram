@@ -31,7 +31,7 @@ class Ingredient(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=['measurement_unit', 'name'],
-                name='unique ingredient')
+                name='unique ingredient fields')
         ]
         verbose_name = 'Ингридиент'
 
@@ -67,7 +67,7 @@ class Recipe(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=['author', 'name'],
-                name='unique recipe')
+                name='unique recipe fields')
         ]
         verbose_name = 'Рецепт'
 
@@ -99,7 +99,7 @@ class IngredientAmount(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=['recipe', 'ingredient'],
-                name='unique ingredient amount')
+                name='unique ingredient amount fields')
         ]
         verbose_name = 'Количество'
 
@@ -126,7 +126,7 @@ class Favorite(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=['recipe', 'user'],
-                name='unique favorite')
+                name='unique favorite fields')
         ]
         verbose_name = 'Избранное'
 
@@ -153,7 +153,7 @@ class ShoppingCart(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=['recipe', 'user'],
-                name='unique purchase')
+                name='unique purchase fields')
         ]
         verbose_name = 'Корзина'
 
