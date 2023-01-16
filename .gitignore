@@ -131,8 +131,9 @@ dmypy.json
 # .idea
 .idea
 
-backend/foodgram/recipes/images
-backend/foodgram/static/
-backend/foodgram/staticfiles/
-backend/foodgram/media
-infra-dev
+# Dev directories
+**/images/
+infra-dev/
+**/staticfiles/
+**/media
+**/pos*/

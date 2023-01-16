@@ -99,7 +99,7 @@ class SubscribeAPIView(CreateDestroyAPIView):
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
-    pagination_class = PageLimitPagination
+    pagination = PageLimitPagination
     queryset = Recipe.objects.all().order_by('-id')
     serializer_class = RecipeInteractSerializer
     http_method_names = ['get', 'post', 'patch', 'delete']
