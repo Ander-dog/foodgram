@@ -145,7 +145,7 @@ class SubscriptionSerializer(serializers.ModelSerializer):
             'recipes_limit',
             DEFAULT_RECIPE_LIMIT,
         )
-        recipes = obj.recipes.all()[:int(recipes_limit)]
+        recipes = obj.recipes.all().order_by('-id')[:int(recipes_limit)]
         return ShortRecipeSerializer(recipes, many=True).data
 
     def get_is_subscribed(self, obj):
