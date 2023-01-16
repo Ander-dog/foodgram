@@ -13,7 +13,7 @@ from recipes.models import (Favorite, Ingredient, IngredientAmount, Recipe,
                             ShoppingCart, Tag)
 from users.models import Subscription
 
-from .filters import RecipeFilter, IngredientFilter
+from .filters import IngredientFilter, RecipeFilter
 from .permissions import AuthorOrReadOnly, AuthorRegistrationOrReadOnly
 from .serializers import (FavoriteSerializer, IngredientSerializer,
                           RecipeInteractSerializer, RecipeReadSerializer,
