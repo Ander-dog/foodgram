@@ -19,7 +19,7 @@ services:
     image: anderdog0306/foodgram_backend:latest
     restart: always
     volumes:
-      - static_value:/app/static/
+      - static_value:/app/staticfiles/
       - media_value:/app/media/
     depends_on:
       - db
