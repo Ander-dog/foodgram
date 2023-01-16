@@ -1,35 +1,14 @@
 # praktikum_new_diplom
 foodgram-project-react
 
-# Начало работы с проектом:
+# Краткое описание
+Это сайт, который позволяет делиться рецептами с другими пользователями. Если вам понравится чей-то рецепт, то можно добавить его в избранное или подписаться на этого пользователя. Так же можно добавлять рецепты в список покупок, чтобы потом легко скачать все ингредиенты, которые вам потребуются для приготовления этих блюд.
 
-# Перейти в папку с бэкендом
+# IP Сервера
+Сервер доступен по адресу: http://84.201.135.94/ или по доменному имени http://andredog.ddns.net/
 
-cd backend/
+![workflow status](https://github.com/Ander-dog/yamdb_final/actions/workflows/yamdb_workflow.yml/badge.svg)
 
-# Cоздать и активировать виртуальное окружение:
-
-python -m venv env
-
-source env/bin/activate
-
-# Установить зависимости из файла requirements.txt:
-
-python -m pip install --upgrade pip
-
-pip install -r requirements.txt
-
-# Выполнить миграции:
-
-cd  foodgram/
-
-python manage.py migrate
-
-# Заполнить БД тестовыми данными:
-
-python manage.py fill
-
-
-# Запустить проект:
-
-python manage.py runserver
+# Суперюзер
+Юзернэйм: superuser <br/>
+Пароль: a
