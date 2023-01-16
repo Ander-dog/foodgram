@@ -200,11 +200,8 @@ class RecipeInteractSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         ingredients = attrs['ingredients']
-        tags = attrs['tags']
-        print(tags)
         ingredients_id = []
         for ingr in ingredients:
-            print(ingr)
             if not Ingredient.objects.filter(id=ingr['id']).exists():
                 raise ValidationError('Нет такого ингредиента')
             if ingr['id'] in ingredients_id:

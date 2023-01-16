@@ -13,7 +13,7 @@ from recipes.models import (Favorite, Ingredient, IngredientAmount, Recipe,
                             ShoppingCart, Tag)
 from users.models import Subscription
 
-from .filters import RecipeFilter
+from .filters import RecipeFilter, IngredientFilter
 from .permissions import AuthorOrReadOnly, AuthorRegistrationOrReadOnly
 from .serializers import (FavoriteSerializer, IngredientSerializer,
                           RecipeInteractSerializer, RecipeReadSerializer,
@@ -41,6 +41,7 @@ class TagViewSet(viewsets.ReadOnlyModelViewSet):
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
+    filter_class = IngredientFilter
 
 
 class FavoriteAPIView(CreateDestroyAPIView):
