@@ -8,7 +8,6 @@ from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.filters import OrderingFilter
 
 from recipes.models import (Favorite, Ingredient, IngredientAmount, Recipe,
                             ShoppingCart, Tag)
@@ -37,7 +36,6 @@ class CreateDestroyAPIView(mixins.CreateModelMixin, mixins.DestroyModelMixin,
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Tag.objects.all().order_by('-id')
     serializer_class = TagSerializer
-    filter_backends = (OrderingFilter,)
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
