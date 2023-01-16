@@ -131,7 +131,7 @@ class Favorite(models.Model):
         verbose_name = 'Избранное'
 
     def __str__(self) -> str:
-        return self.recipe
+        return self.recipe.name
 
 
 class ShoppingCart(models.Model):
@@ -158,4 +158,4 @@ class ShoppingCart(models.Model):
         verbose_name = 'Корзина'
 
     def __str__(self) -> str:
-        return self.recipe
+        return self.recipe.name
