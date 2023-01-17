@@ -127,7 +127,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return RecipeReadSerializer
         return RecipeInteractSerializer
 
-    @action(["get"], detail=False, url_path='download_shopping_cart',
+    @action(['get'], detail=False, url_path='download_shopping_cart',
             permission_classes=(IsAuthenticated,))
     def download_shopping_cart(self, request, *args, **kwargs):
         ingredients = IngredientAmount.objects.filter(
@@ -170,14 +170,14 @@ class UserViewSet(viewsets.ModelViewSet):
             return super().update(request, *args, **kwargs)
         return Response(status=status.HTTP_403_FORBIDDEN)
 
-    @action(["get"], detail=False, url_path='me',
+    @action(['get'], detail=False, url_path='me',
             permission_classes=(IsAuthenticated,))
     def me(self, request, *args, **kwargs):
         user = request.user
         serializer = UserSerializer(user)
         return Response(serializer.data)
 
-    @action(["post"], detail=False, url_path='set_password',
+    @action(['post'], detail=False, url_path='set_password',
             permission_classes=(IsAuthenticated,))
     def set_password(self, request, *args, **kwargs):
         user = request.user
