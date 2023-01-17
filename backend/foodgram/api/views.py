@@ -41,7 +41,7 @@ class TagViewSet(viewsets.ReadOnlyModelViewSet):
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
-    filter_class = IngredientFilter
+    filterset_class = IngredientFilter
 
 
 class FavoriteAPIView(CreateDestroyAPIView):
@@ -99,11 +99,11 @@ class SubscribeAPIView(CreateDestroyAPIView):
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
-    pagination = PageLimitPagination
+    pagination_class = PageLimitPagination
     queryset = Recipe.objects.all().order_by('-id')
     serializer_class = RecipeInteractSerializer
     http_method_names = ['get', 'post', 'patch', 'delete']
-    filter_class = RecipeFilter
+    filterset_class = RecipeFilter
     permission_classes = (AuthorOrReadOnly,)
 
     def create(self, request, *args, **kwargs):
@@ -131,13 +131,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
             permission_classes=(IsAuthenticated,))
     def download_shopping_cart(self, request, *args, **kwargs):
         ingredients = IngredientAmount.objects.filter(
-            recipe__shopcart__user=request.user
+            recipe__is_in_shopping_cart__user=request.user
         ).values(
             'ingredient__name', 'ingredient__measurement_unit'
         ).order_by('ingredient__name').annotate(
             ingredient_amount=Sum('amount')
         )
-        print(ingredients)
         if ingredients.count() == 0:
             text = 'В вашей корзине пусто'
         else:

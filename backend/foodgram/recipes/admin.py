@@ -28,7 +28,7 @@ class RecipeAdmin(admin.ModelAdmin):
     list_filter = ('name', 'author', 'tags')
 
     def count_fans(self, obj):
-        return obj.favorites.all().count()
+        return obj.is_favorited.all().count()
 
 
 @admin.register(Tag)

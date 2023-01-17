@@ -135,5 +135,4 @@ dmypy.json
 **/images/
 infra-dev/
 **/staticfiles/
-**/media
-**/pos*/
+**/media/
