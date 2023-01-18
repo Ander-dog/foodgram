@@ -1,19 +1,12 @@
-from django import forms
 from django.contrib import admin
 
 from .models import (Favorite, Ingredient, IngredientAmount, Recipe,
                      ShoppingCart, Tag)
 
 
-class RequiredFormSet(forms.models.BaseInlineFormSet):
-    def __init__(self, *args, **kwargs):
-        super(RequiredFormSet, self).__init__(*args, **kwargs)
-        self.forms[0].empty_permitted = False
-
-
 class IngredientAmountInline(admin.TabularInline):
+    min_num = 1
     model = IngredientAmount
-    formset = RequiredFormSet
 
 
 @admin.register(Recipe)
