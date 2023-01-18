@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.db.models import Sum, Exists, OuterRef, Value, BooleanField
+from django.db.models import BooleanField, Exists, OuterRef, Sum, Value
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from djoser.serializers import SetPasswordSerializer
@@ -20,8 +20,6 @@ from .serializers import (FavoriteSerializer, IngredientSerializer,
                           ShoppingCartSerializer, SubscribeSerializer,
                           SubscriptionSerializer, TagSerializer,
                           UserSerializer)
-
-from .decorators import query_debugger
 
 User = get_user_model()
 
@@ -107,10 +105,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
     filterset_class = RecipeFilter
     permission_classes = (AuthorOrReadOnly,)
 
-    @query_debugger
-    def list(self, request, *args, **kwargs):
-        return super().list(request, *args, **kwargs)
-
     def get_queryset(self):
         user = self.request.user
         queryset = Recipe.objects.prefetch_related('tags', 'ingredients')
@@ -130,7 +124,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
             is_in_shopping_cart_field=Value(False, output_field=BooleanField())
         ).order_by('-id')
 
-    @query_debugger
     def create(self, request, *args, **kwargs):
         request.data['author'] = request.user.id
         serializer = self.get_serializer(data=request.data)
