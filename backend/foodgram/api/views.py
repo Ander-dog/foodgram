@@ -163,6 +163,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         pdfmetrics.registerFont(
             ttfonts.TTFont('FreeSans', 'data/fonts/FreeSans.ttf')
         )
+        canvas.setTitle(filename)
         canvas.setFont('FreeSans', 34)
         canvas.drawString(start_x - 10, start_y + 40, title)
         canvas.setFont('FreeSans', 18)
@@ -188,7 +189,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             ingredient_amount=Sum('amount')
         )
         title = 'Список покупок:'
-        filename = 'shopping-list.pdf'
+        filename = 'Список покупок'
         text_content = []
         for ingr in ingredients:
             name = ingr.get('ingredient__name')
