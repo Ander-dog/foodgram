@@ -13,3 +13,4 @@ djoser==2.1.0
 flake8==5.0.4
 Pillow==9.4.0
 python-dotenv==0.21.0
+reportlab==3.6.12
