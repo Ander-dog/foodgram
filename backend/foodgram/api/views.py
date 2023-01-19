@@ -3,6 +3,9 @@ from django.db.models import BooleanField, Exists, OuterRef, Sum, Value
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from djoser.serializers import SetPasswordSerializer
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfbase import pdfmetrics, ttfonts
+from reportlab.pdfgen.canvas import Canvas
 from rest_framework import generics, mixins, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
@@ -107,7 +110,10 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        queryset = Recipe.objects.prefetch_related('tags', 'ingredients')
+        queryset = Recipe.objects.prefetch_related(
+            'tags',
+            'ingredients',
+        ).select_related('author')
 
         if user.is_authenticated:
             return queryset.annotate(
@@ -145,6 +151,32 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return RecipeReadSerializer
         return RecipeInteractSerializer
 
+    def canvas_method(self, list, title, filename):
+        start_x, start_y = 40, 730
+        response = HttpResponse(
+            status=status.HTTP_200_OK,
+            content_type='application/pdf',
+        )
+        response['Content-Disposition'] = (f'attachment; filename='
+                                           f'"{filename}"')
+        canvas = Canvas(response, pagesize=A4)
+        pdfmetrics.registerFont(
+            ttfonts.TTFont('FreeSans', 'data/fonts/FreeSans.ttf')
+        )
+        canvas.setFont('FreeSans', 34)
+        canvas.drawString(start_x - 10, start_y + 40, title)
+        canvas.setFont('FreeSans', 18)
+        for number, item in enumerate(list, start=1):
+            if start_y < 100:
+                start_y = 730
+                canvas.showPage()
+                canvas.setFont('FreeSans', 18)
+            canvas.drawString(start_x, start_y, f'{number}. {item}')
+            start_y -= 30
+        canvas.showPage()
+        canvas.save()
+        return response
+
     @action(['get'], detail=False, url_path='download_shopping_cart',
             permission_classes=(IsAuthenticated,))
     def download_shopping_cart(self, request, *args, **kwargs):
@@ -155,26 +187,16 @@ class RecipeViewSet(viewsets.ModelViewSet):
         ).order_by('ingredient__name').annotate(
             ingredient_amount=Sum('amount')
         )
-        if ingredients.count() == 0:
-            text = 'В вашей корзине пусто'
-        else:
-            text_content = ['Список покупок:\n']
-            for ingr in ingredients:
-                name = ingr.get('ingredient__name')
-                m_unit = ingr.get('ingredient__measurement_unit')
-                amount = ingr.get('ingredient_amount')
-                text_content.append(f'{name}: {amount} {m_unit}\n')
-            text = ''.join(text_content)
-        filename = 'shopping_list.txt'
-        response = HttpResponse(
-            text,
-            status=status.HTTP_200_OK,
-            content_type='text/plain'
-        )
-        response['Content-Disposition'] = (f'attachment; filename='
-                                           f'"{filename}"')
+        title = 'Список покупок:'
+        filename = 'shopping-list.pdf'
+        text_content = []
+        for ingr in ingredients:
+            name = ingr.get('ingredient__name')
+            m_unit = ingr.get('ingredient__measurement_unit')
+            amount = ingr.get('ingredient_amount')
+            text_content.append(f'{name.capitalize()}: {amount} {m_unit}')
 
-        return response
+        return self.canvas_method(text_content, title, filename)
 
 
 class UserViewSet(viewsets.ModelViewSet):
