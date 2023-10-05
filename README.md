@@ -9,6 +9,6 @@ foodgram-project-react
 
 ![workflow status](https://github.com/Ander-dog/yamdb_final/actions/workflows/yamdb_workflow.yml/badge.svg)
 
-# Суперюзер
-Юзернэйм: superuser <br/>
-Пароль: a
+# Пользователь для быстрого входа
+Почта: user@mail.com <br/>
+Пароль: useruser
