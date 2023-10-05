@@ -137,3 +137,5 @@ infra-dev/
 **/staticfiles/
 **/media/
 **/decorators.py
+.DS_Store
+
