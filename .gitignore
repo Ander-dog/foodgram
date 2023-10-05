@@ -131,7 +131,6 @@ dmypy.json
 # .idea
 .idea
 
-
 # Dev directories
 **/images/
 infra-dev/
