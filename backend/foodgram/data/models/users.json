@@ -1,0 +1,16 @@
+[
+    {
+        "first_name": "Алексей",
+        "last_name": "Андреев",
+        "username": "cooking_rookie",
+        "email": "a_a@mail.com",
+        "password": "12345678"
+    },
+    {
+        "first_name": "Марина",
+        "last_name": "Сидорова",
+        "username": "pro_chef_simulator",
+        "email": "m_s@mail.com",
+        "password": "87654321"
+    }
+]

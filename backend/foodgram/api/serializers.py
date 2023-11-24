@@ -207,6 +207,8 @@ class RecipeInteractSerializer(serializers.ModelSerializer):
             if ingr['id'] in ingredients_id:
                 raise ValidationError('Повторяющийся ингредиент')
             ingredients_id.append(ingr['id'])
+        text: str = attrs['text']
+        attrs['text'] = text.replace('\n<br>', '\n').replace('\n', '\n<br>')
         return attrs
 
     def create(self, validated_data):
