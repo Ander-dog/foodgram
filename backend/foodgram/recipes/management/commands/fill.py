@@ -1,15 +1,13 @@
 import base64
 import json
 
+from api.serializers import (IngredientSerializer, RecipeInteractSerializer,
+                             TagSerializer, UserSerializer)
 from django.contrib.auth import get_user_model
 from django.core.management import BaseCommand
 from django.core.management.base import CommandParser
 from django.shortcuts import get_object_or_404
-
-from api.serializers import (IngredientSerializer, TagSerializer,
-                             UserSerializer, RecipeInteractSerializer)
 from recipes.models import Ingredient, Tag
-
 
 User = get_user_model()
 DATA_PATH = 'data/models/'

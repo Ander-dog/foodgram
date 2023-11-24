@@ -1,7 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db.models import IntegerField, Q, Value
 from django_filters import rest_framework as filters
-
 from recipes.models import Ingredient, Recipe
 
 User = get_user_model()
