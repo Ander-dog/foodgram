@@ -133,9 +133,9 @@ dmypy.json
 
 # Dev directories
 **/images/
-infra-dev/
 **/staticfiles/
 **/media/
+infra-dev/
 **/decorators.py
 .DS_Store
 
