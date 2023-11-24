@@ -1,12 +1,13 @@
 import base64
 import json
 
-from api.serializers import (IngredientSerializer, RecipeInteractSerializer,
-                             TagSerializer, UserSerializer)
 from django.contrib.auth import get_user_model
 from django.core.management import BaseCommand
 from django.core.management.base import CommandParser
 from django.shortcuts import get_object_or_404
+
+from api.serializers import (IngredientSerializer, RecipeInteractSerializer,
+                             TagSerializer, UserSerializer)
 from recipes.models import Ingredient, Tag
 
 User = get_user_model()
@@ -21,7 +22,7 @@ class Command(BaseCommand):
                 ingredient = IngredientSerializer(data=ingr)
                 if ingredient.is_valid(raise_exception=True):
                     ingredient.save()
-    
+
     def fill_tags(self):
         with open(DATA_PATH + 'tags.json') as file:
             tags_data = json.load(file)
@@ -29,7 +30,7 @@ class Command(BaseCommand):
                 tag = TagSerializer(data=tag)
                 if tag.is_valid(raise_exception=True):
                     tag.save()
-    
+
     def fill_users(self):
         with open(DATA_PATH + 'users.json') as file:
             users_data = json.load(file)
@@ -99,7 +100,9 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         if options['all'] or options['users']:
             self.fill_users()
-            self.stdout.write(self.style.SUCCESS('Все пользователи загружены!'))
+            self.stdout.write(
+                self.style.SUCCESS('Все пользователи загружены!')
+            )
         if options['all'] or options['tags']:
             self.fill_tags()
             self.stdout.write(self.style.SUCCESS('Все тэги загружены!'))
