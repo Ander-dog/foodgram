@@ -3,11 +3,13 @@ services:
 
   frontend:
     image: anderdog0306/foodgram_frontend:latest
+    restart: always
     volumes:
       - ../frontend/:/app/result_build/
 
   db:
     image: postgres:13.0-alpine
+    restart: always
     volumes:
       - /var/lib/postgresql/data/
     env_file:
@@ -26,6 +28,7 @@ services:
 
   nginx:
     image: nginx:1.21.3-alpine
+    restart: always
     ports:
       - "80:80"
     volumes:
