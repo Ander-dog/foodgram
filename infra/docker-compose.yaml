@@ -2,9 +2,7 @@ version: '3.8'
 services:
 
   frontend:
-    build:
-      context: ../frontend
-      dockerfile: Dockerfile
+    image: anderdog0306/foodgram_frontend:latest
     volumes:
       - ../frontend/:/app/result_build/
 
