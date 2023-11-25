@@ -58,10 +58,10 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         passphrase: ${{ secrets.SSH_PASSPHRASE }}
         script: |
-          cd foodgram-project-react/infra/
+          cd foodgram/infra/
           sudo docker-compose stop
           wait
-          sudo sudo docker rm infra_backend_1
+          sudo docker rm infra_backend_1
           wait
           sudo docker rmi ${{ secrets.DOCKERHUB_USERNAME }}/foodgram_backend:latest
           wait
